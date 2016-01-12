@@ -94,11 +94,6 @@ window.onload = function() {
 };
 
 var NODE_WIDTH = 100, NODE_HEIGHT = 50;
-var components = {}
-
-function addComponent(com, x, y, width, height) {
-    component[com] = { X:x, Y:y }
-}
 
 function generate(list, canvas, x, y) {
     var node = list.head;
@@ -125,8 +120,10 @@ function generate(list, canvas, x, y) {
                 break;
             case "list":
                 canvas.strokeRect(x, y, NODE_WIDTH, NODE_HEIGHT);
-                canvas.moveTo(x + 25, y + NODE_HEIGHT);
-                canvas.lineTo(x + 25, offsetY + 100);
+                if (node.head != null) {
+                    canvas.moveTo(x + 25, y + NODE_HEIGHT);
+                    canvas.lineTo(x + 25, offsetY + 100);
+                }
                 canvas.moveTo(x + 50, y);
                 canvas.lineTo(x + 50, y + 50);
                 canvas.stroke();
