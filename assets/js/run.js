@@ -62,7 +62,6 @@ Lexer.prototype.handle = function(list) {
                 i++;
             } 
             getCurr().attach(new Node(item)); 
-            console.log("Added item");
         }
     }
 };
@@ -120,10 +119,6 @@ function generate(list, canvas, x, y) {
                 break;
             case "list":
                 canvas.strokeRect(x, y, NODE_WIDTH, NODE_HEIGHT);
-                if (node.head != null) {
-                    canvas.moveTo(x + 25, y + NODE_HEIGHT);
-                    canvas.lineTo(x + 25, offsetY + 100);
-                }
                 canvas.moveTo(x + 50, y);
                 canvas.lineTo(x + 50, y + 50);
                 canvas.stroke();
@@ -138,8 +133,12 @@ function generate(list, canvas, x, y) {
                     canvas.stroke();
                 }
 
-                offsetY += 100;
-                generate(node, canvas, x, offsetY);
+                if (node.head != null) {
+                    canvas.moveTo(x + 25, y + NODE_HEIGHT);
+                    canvas.lineTo(x + 25, offsetY + 100);
+                    offsetY += 100;
+                    generate(node, canvas, x, offsetY);
+                }
                 x += 150;
                 break;
         }
