@@ -1,0 +1,47 @@
+body {
+    background-color: white;
+}
+
+#sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #314868;
+}
+
+#main {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 200px;
+    right: 0;
+    text-align: center;
+}
+
+div.nav {
+    position: relative;
+    top: 200px;
+}
+
+div.link {
+    position: relative;
+    left: -80px;
+    width: 200px;
+    background: #5279ad;
+    border-radius: 25px;
+}
+
+div.link.active.active {
+    position: relative;
+    left: -20px;
+}
+
+a {
+    position: relative;
+    right: -100px;
+    font-family: 'Helvetica', 'Arial';
+    font-size: 2em;
+    text-decoration: none;
+    color: white;
+}
