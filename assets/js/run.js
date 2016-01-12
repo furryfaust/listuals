@@ -67,6 +67,8 @@ Lexer.prototype.handle = function(list) {
     }
 };
 
+var offsetY;
+
 window.onload = function() {
 
     var canvas = document.getElementById("draw");
@@ -81,7 +83,11 @@ window.onload = function() {
         list = list.head;
 
         var ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "#000";
+        ctx.font = "30px Arial";
+        ctx.textAlign = "center";
+        offsetY = 50;
         generate(list, ctx, 50, 50);
     }
 
@@ -100,23 +106,47 @@ function generate(list, canvas, x, y) {
         switch (node.type) {
             case "node":
                 canvas.strokeRect(x, y, NODE_WIDTH, NODE_HEIGHT);
+                canvas.moveTo(x + 50, y);
+                canvas.lineTo(x + 50, y + 50);
+                canvas.fillText(node.value, x + 25, y + 35);
+                canvas.stroke();
+
+                if (node.next != null) {
+                    canvas.moveTo(x + NODE_WIDTH, y + NODE_HEIGHT/2);
+                    canvas.lineTo(x + NODE_WIDTH + 50, y + NODE_HEIGHT/2);
+                    canvas.stroke();
+                } else {
+                    canvas.moveTo(x + NODE_WIDTH/2, y + NODE_HEIGHT);
+                    canvas.lineTo(x + NODE_WIDTH, y);     
+                    canvas.stroke();
+                }
+
                 x += 150;
                 break;
             case "list":
                 canvas.strokeRect(x, y, NODE_WIDTH, NODE_HEIGHT);
-                generate(node, canvas, x, y + 100);
+                canvas.moveTo(x + 25, y + NODE_HEIGHT);
+                canvas.lineTo(x + 25, offsetY + 100);
+                canvas.moveTo(x + 50, y);
+                canvas.lineTo(x + 50, y + 50);
+                canvas.stroke();
+
+                if (node.next != null) {
+                    canvas.moveTo(x + NODE_WIDTH, y + NODE_HEIGHT/2);
+                    canvas.lineTo(x + NODE_WIDTH + 50, y + NODE_HEIGHT/2);
+                    canvas.stroke();
+                } else {
+                    canvas.moveTo(x + NODE_WIDTH/2, y + NODE_HEIGHT);
+                    canvas.lineTo(x + NODE_WIDTH, y);     
+                    canvas.stroke();
+                }
+
+                offsetY += 100;
+                generate(node, canvas, x, offsetY);
                 x += 150;
                 break;
         }
         node = node.next;
     }
 }
-
-
-
-
-
-
-
-
 
