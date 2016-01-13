@@ -82,7 +82,7 @@ window.onload = function() {
         list = list.head;
 
         var ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.width = canvas.width;
         ctx.fillStyle = "#000";
         ctx.font = "30px Arial";
         ctx.textAlign = "center";
