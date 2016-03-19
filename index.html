@@ -1,24 +1,18 @@
 <!-- Kevin Zheng -->
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+        <title>Linked List Visualizer</title>
+        <script src="assets/js/run.js"></script>
     </head>
     <body>
-        <div id="sidebar">
-            <div class="nav">
-                <div class="link active">
-                    <a href="index.html">home</a>
-                </div>
-                <br />
-                <div class="link">
-                    <a href="run.html">run</a>
-                </div>
-            </div>
+        <div class="control">
+            <input id="expression" type="text" placeholder="List | ex. (1 2 3)" />
+            <button>generate</button>
         </div>
-        <div id="main">
-            <h1> Linked List Visualizer </h1>
-            <h2> Generate a linked list/ lisp cons cell diagram from a list notation string. </h2>
-            <h2> Ex. (1 2 3 (4 5)) </h2>
+        <div class="wrapper">
+            <canvas></canvas>
         </div>
     </body>
 </html>

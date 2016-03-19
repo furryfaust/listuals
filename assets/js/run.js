@@ -27,13 +27,13 @@ List.prototype.getLast = function() {
     return node;
 };
 
-var Lexer = function(sequence) {
+var Parser = function(sequence) {
     this.sequence = sequence;
 };
 
-Lexer.prototype.itemExpr = new RegExp(/^[a-z0-9]+$/i);
+Parser.prototype.itemExpr = /[A-z0-9]/;
 
-Lexer.prototype.handle = function(list) {
+Parser.prototype.handle = function(list) {
     var listLevel = 0;
 
     function getCurr() {
@@ -66,19 +66,23 @@ Lexer.prototype.handle = function(list) {
     }
 };
 
-var offsetY;
+var offsetY, offsetX = 0;
 
 window.onload = function() {
 
-    var canvas = document.getElementById("draw");
+    var canvas = document.querySelector("canvas");
 
     var expr   = document.getElementById("expression");
-    var submit = document.getElementById("submit");
+    var submit = document.querySelector("button");
 
     submit.onclick = function() {
+        if (expr.value == "") {
+            return;
+        }
+
         var list  = new List();
-        var lexer = new Lexer(expr.value);
-        lexer.handle(list);
+        var parser = new Parser(expr.value);
+        parser.handle(list);
         list = list.head;
 
         var ctx = canvas.getContext("2d");
@@ -86,48 +90,82 @@ window.onload = function() {
         ctx.fillStyle = "#000";
         ctx.font = "30px Arial";
         ctx.textAlign = "center";
+        offsetY = 50, offsetX = 0;
+        generate(list, ctx, 50, 50);
+
+        resize(canvas, 150 + offsetX, 100 + offsetY);
+
         offsetY = 50;
+        ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#000";
+        ctx.font = "30px Arial";
+        ctx.textAlign = "center";
         generate(list, ctx, 50, 50);
     }
 
 };
 
-var NODE_WIDTH = 100, NODE_HEIGHT = 50;
+var NODE_WIDTH = 100, NODE_HEIGHT = NODE_WIDTH / 2;
+
+function resize(canvas, width, height) {
+    var ratio = (function () {
+        var ctx = canvas.getContext("2d"),
+        dpr = window.devicePixelRatio || 1,
+        bsr = ctx.webkitBackingStorePixelRatio ||
+            ctx.mozBackingStorePixelRatio ||
+            ctx.msBackingStorePixelRatio ||
+            ctx.oBackingStorePixelRatio ||
+            ctx.backingStorePixelRatio || 1;
+        return dpr / bsr;
+    })();
+
+    canvas.width = width * ratio;
+    canvas.height = height  * ratio;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    canvas.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
+}
 
 function generate(list, canvas, x, y) {
     var node = list.head;
     while (node != null) {
+        if (x > offsetX) {
+            offsetX = x;
+            console.log(offsetX);
+        }
+
+
         canvas.strokeRect(x, y, NODE_WIDTH, NODE_HEIGHT);
-        canvas.moveTo(x + 50, y);
-        canvas.lineTo(x + 50, y + 50);
+        canvas.moveTo(x + NODE_WIDTH / 2, y);
+        canvas.lineTo(x + NODE_WIDTH / 2, y + NODE_WIDTH / 2);
         canvas.stroke();
 
         if (node.next != null) {
-            canvas.moveTo(x + NODE_WIDTH, y + NODE_HEIGHT/2);
-            canvas.lineTo(x + NODE_WIDTH + 50, y + NODE_HEIGHT/2);
+            canvas.moveTo(x + NODE_WIDTH, y + NODE_HEIGHT / 2);
+            canvas.lineTo(x + NODE_WIDTH + NODE_WIDTH / 2, y + NODE_HEIGHT / 2);
             canvas.stroke();
         } else {
-            canvas.moveTo(x + NODE_WIDTH/2, y + NODE_HEIGHT);
+            canvas.moveTo(x + NODE_WIDTH / 2, y + NODE_HEIGHT);
             canvas.lineTo(x + NODE_WIDTH, y);     
             canvas.stroke();
         }
 
         switch (node.type) {
             case "node":
-                canvas.fillText(node.value, x + 25, y + 35);
+                canvas.fillText(node.value, x + NODE_HEIGHT / 2, y + (NODE_HEIGHT * 7 / 10));
                 canvas.stroke();
                 break;
             case "list":
                 if (node.head != null) {
-                    canvas.moveTo(x + 25, y + NODE_HEIGHT);
-                    canvas.lineTo(x + 25, offsetY + 100);
-                    offsetY += 100;
+                    canvas.moveTo(x + NODE_HEIGHT / 2, y + NODE_HEIGHT);
+                    canvas.lineTo(x + NODE_HEIGHT / 2, offsetY + NODE_WIDTH);
+                    offsetY += NODE_WIDTH;
                     generate(node, canvas, x, offsetY);
                 }
                 break;
         }
 
-        x += 150;
+        x += (NODE_HEIGHT * 3);
         node = node.next;
     }
 }

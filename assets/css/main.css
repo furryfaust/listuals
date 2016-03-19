@@ -1,47 +1,33 @@
-body {
-    background-color: white;
+* {
+    margin: 0; 
+    padding: 0px;
 }
 
-#sidebar {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #314868;
-}
+.control {
+    position: fixed;
+    width: 100%;
 
-#main {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 200px;
-    right: 0;
+    padding: 10px;
+    background-color: #3d3d3e;
+
     text-align: center;
 }
 
-div.nav {
-    position: relative;
-    top: 200px;
+.wrapper {
+    overflow-x: scroll;
 }
 
-div.link {
-    position: relative;
-    left: -80px;
-    width: 200px;
-    background: #5279ad;
-    border-radius: 25px;
-}
-
-div.link.active.active {
-    position: relative;
-    left: -20px;
-}
-
-a {
-    position: relative;
-    right: -100px;
-    font-family: 'Helvetica', 'Arial';
-    font-size: 2em;
-    text-decoration: none;
+input {
+    padding: 2px;
+    text-align: center;
+    font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace;
     color: white;
+    border: unset;
+    background-color: #3D3D3E;
+}
+
+button {
+    padding: 4px;
+
+    margin-left: 5px;
 }
