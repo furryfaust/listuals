@@ -33,6 +33,24 @@ var Parser = function(sequence) {
 
 Parser.prototype.itemExpr = /[A-z0-9]/;
 
+Parser.prototype.verify = function() {
+    if (this.sequence[0] != "(") {
+        this.sequence = "(" + this.sequence + ")";
+    }
+
+    var listLevel = 0;
+
+    for (var i = 0; i != this.sequence.length; i++) {
+        if (this.sequence[i] == "(") {
+            listLevel++;
+        } else if (this.sequence[i] == ")") {
+            listLevel--;
+        }
+    }
+
+    return listLevel == 0;
+}
+
 Parser.prototype.handle = function(list) {
     var listLevel = 0;
 
@@ -49,9 +67,7 @@ Parser.prototype.handle = function(list) {
         if (this.sequence[i] == "(") {
             getCurr().attach(new List());
             listLevel++;
-        }
-
-        if (this.sequence[i] == ")") {
+        } else if (this.sequence[i] == ")") {
             listLevel--;
         } 
 
@@ -82,6 +98,12 @@ window.onload = function() {
 
         var list  = new List();
         var parser = new Parser(expr.value);
+
+        if (!parser.verify()) {
+            alert("Invalid expression");
+            return;
+        }
+
         parser.handle(list);
         list = list.head;
 
